@@ -2,12 +2,14 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
+import pyperclip
 
 chrome_options = webdriver.ChromeOptions()
 chrome_options.add_argument("--headless")
 chrome_options.add_argument("--disable-gpu")
 chrome_options.add_argument("--no-sandbox")
-driver = webdriver.Chrome(options=chrome_options)
+driver = webdriver.Chrome()
+driver2 = webdriver.Chrome(options=chrome_options)
 
 def parse_string(text):
     #Replace the following characters in the text
@@ -46,31 +48,26 @@ def parse_string(text):
 
     return text
 
-def main():
-    text = """
-    Dos hogares, ambos iguales en dignidad,
-En la bella Verona, donde ponemos nuestro escenario,
-De la antigua ruptura de rencor a un nuevo motín,
-Donde la sangre civil hace las manos civiles sucias.
-De los lomos fatales de estos dos enemigos
-Un par de amantes estrellados se quitan la vida;
-Cuyos derrocamientos lamentables desventurados
-Haz con su muerte, entierra la contienda de sus padres.
-El terrible pasaje de su amor marcado por la muerte,
-Y la continuación de la ira de sus padres,
-Que, salvo el fin de sus hijos, nada podría eliminar,
-Es ahora el tráfico de dos horas de nuestro escenario;
-El que si asistes con oídos pacientes,
-Lo que aquí faltará, nuestro trabajo se esforzará por enmendar."""
+def selenium():
+    text = "吃牛蛋喝鸡奶"
     text = parse_string(text)
     #source language auto detect, target language english
     link = f"https://translate.google.com/?sl=auto&tl=en&text={text}&op=translate"
     driver.get(link)
+    driver2.get(link)
+
+    copy_button = (By.CLASS_NAME, "VfPpkd-Bz112c-LgbsSe.yHy1rc.eT1oJ.qiN4Vb.itOtF.IK3GNd")
+    WebDriverWait(driver, 10).until(EC.element_to_be_clickable(copy_button)).click()
+    translated_text = pyperclip.paste()
+    print("Using copy button:", translated_text)
+    #driver.quit()
     
     translated_box = (By.CLASS_NAME, "zkZ4Kc.dHeVVb")
-    trbox = WebDriverWait(driver, 10).until(EC.presence_of_element_located(translated_box))
-    translated_text = trbox.get_attribute("data-text")
-    print(translated_text)
-    driver.quit()
+    trbox = WebDriverWait(driver2, 10).until(EC.presence_of_element_located(translated_box))
+    translated_text2 = trbox.get_attribute("data-text")
+    print("In headless mode by scraping:", translated_text2)
+
+    driver2.quit()
+    
 
 main()
