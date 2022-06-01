@@ -12,7 +12,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 import time, urllib.request
 import requests
-'''
+
 L = instaloader.Instaloader()
 
 L.login("username", "password")
@@ -28,7 +28,7 @@ file.close()
 
 print("All followers retrieved!")
 
-'''
+
 with open("remaining_followees.txt", "r") as file:
     followee_list = file.readlines()
     
