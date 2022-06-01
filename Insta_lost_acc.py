@@ -41,8 +41,8 @@ username=driver.find_element(by=By.CSS_SELECTOR, value="input[name='username']")
 password=driver.find_element(by=By.CSS_SELECTOR, value="input[name='password']")
 username.clear()
 password.clear()
-username.send_keys("tiffyz_thisisnewmynewaccount")
-password.send_keys("aroundusisverypopular")
+username.send_keys("username")
+password.send_keys("password")
 login = driver.find_element(by=By.CSS_SELECTOR, value="button[type='submit']").click()
 
 #save your login info?
